@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Breakfast Menu</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .cart-icon {
+      position: relative;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #ff0000;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-image {
+      background-color: white;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .product-info {
+      text-align: center;
+    }
+
+    .product-title {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-weight: 500;
+      margin: 8px 0;
+    }
+
+    .add-to-cart {
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .add-to-cart:hover {
+      background-color: #555;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .close-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.close-button:hover {
+  background-color: rgb(95, 93, 93);
+}
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.quantity-controls button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.quantity-controls button:hover {
+  background-color: #555;
+}
+
+.quantity {
+  font-size: 16px;
+  font-weight: bold;
+  width: 20px;
+  text-align: center;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>LUNCH MENU</h1>
+      <div class="cart-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </div>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <!-- Products will be inserted here by JavaScript -->
+    </div>
+  </div>
+  <button class="close-button" onclick="redirectToPage()">Close</button>
+
+  
+
+  <script>
+   
+  // Product data
+  const products = [
+    {
+      name: "Savory French Toast",
+      id: "4.2*",
+      price: 200,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_QLV8Ze51Onm2rrbIgjfCSMJ96AWDsw0rw&s"
+    },
+    {
+      id: "4.2*",
+      name: "Moong Dal Dosa",
+      price: 250,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo3e5QsvtMi4ftM7ccVPX-3cMviRwiMLZNGCjQobjs2c4mlmSo2-EnM6VtzVVSP6omd3s&usqp=CAU"
+    },
+    {
+      id: "4.2*",
+      name: "Gobi Paratha",
+      price: 200,
+      image: "https://zarskitchen.com/wp-content/uploads/2021/02/screenshot-2021-02-21-at-16.04.44.png"
+    },
+    {
+      id: "4.2*",
+      name: "Poha",
+      price: 200,
+      image: "https://pipingpotcurry.com/wp-content/uploads/2020/12/Poha-Recipe-indori-Piping-Pot-Curry.jpg"
+    },
+    {
+      id: "4.2*",
+      name: "Medu Vada",
+      price: 300,
+      image: "https://media.istockphoto.com/id/1292633263/photo/indian-fried-snack-medu-vada-with-sambar-and-coconut-chutney-in-plate-on-rustic-wooden.jpg?s=612x612&w=0&k=20&c=I24Sl76Qq4ly7WlI3HJJa8VfCIkBxvsgVZ8mAb81ZEA="
+    },
+    {
+      id: "4.2*",
+      name: "Sabji and Poori",
+      price: 200,
+      image: "https://lh3.googleusercontent.com/proxy/cuuW0VkhFoQGLxviwFT-SmIr8vziWpnzv9YSQv7CkNWbo7_UX8P__wiDf3U5qzA2v7c2t3oBdw98FpMOQ0j6_K9NYdm-0f0jZmpMsChVGXY0N2g_pfdJYlMleTMeD3OnczT8ig"
+    },
+    {
+      id: "4.2*",
+      name: "Thepla",
+      price: 300,
+      image: "https://www.sanjanafeasts.co.uk/wp-content/uploads/2020/02/Gujarati-Thepla-Recipe-546x728.jpg.webp"
+    },
+    {
+      id: "4.2*",
+      name: "Fafda-Jalebi",
+      price: 200,
+      image: "https://tastespread.com/wp-content/uploads/2023/10/Jalebi-Fafda.jpg"
+    }
+  ];
+
+  // Cart counter
+  let cartCount = 0;
+
+  // Function to render products
+  function renderProducts() {
+    const productGrid = document.getElementById('product-grid');
+
+    products.forEach(product => {
+      const productCard = document.createElement('div');
+      productCard.className = 'product-card';
+
+      productCard.innerHTML = `
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.id} ${product.name}">
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">${product.id} ${product.name}</h3>
+          <p class="product-price">$${product.price}</p>
+          <div class="quantity-controls">
+            <button class="decrease-btn" onclick="changeQuantity(this, -1)">-</button>
+            <span class="quantity">1</span>
+            <button class="increase-btn" onclick="changeQuantity(this, 1)">+</button>
+          </div>
+          <button class="add-to-cart" onclick="addToCart(this)">Add To Cart</button>
+        </div>
+      `;
+
+      productGrid.appendChild(productCard);
+    });
+  }
+
+  // Function to change quantity
+  function changeQuantity(button, change) {
+    let quantitySpan = button.parentElement.querySelector(".quantity");
+    let currentQuantity = parseInt(quantitySpan.textContent);
+    
+    if (currentQuantity + change >= 1) {
+      quantitySpan.textContent = currentQuantity + change;
+    }
+  }
+
+  // Function to add item to cart
+  function addToCart(button) {
+    let quantity = parseInt(button.previousElementSibling.querySelector(".quantity").textContent);
+    cartCount += quantity;
+    updateCartCount();
+  }
+
+  // Function to update cart count display
+  function updateCartCount() {
+    const cartCountElement = document.getElementById('cart-count');
+    cartCountElement.textContent = cartCount;
+  }
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', () => {
+    renderProducts();
+  });
+
+  // Function to redirect on close button click
+  function redirectToPage() {
+    window.location.href = "home.html"; // Change this to your target page
+  }
+
+
+
+
+  </script>
+</body>
+</html>

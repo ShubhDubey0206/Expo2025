@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+</head>
+<body>
+    <h1>My Account</h1>
+    <div id="userDetails"></div>
+
+    <label><strong>Password:</strong> 
+        <input type="password" id="passwordField" readonly>
+        <button id="togglePassword">👁️</button>
+    </label>
+
+    <br><br>
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedUser = JSON.parse(localStorage.getItem("user"));
+            
+            if (storedUser) {
+                document.getElementById("userDetails").innerHTML = `
+                    <p><strong>Username:</strong> ${storedUser.username || "Not set"}</p>
+                    <p><strong>Email:</strong> ${storedUser.email}</p>
+                `;
+
+                document.getElementById("passwordField").value = storedUser.password || "No password stored";
+            } else {
+                document.getElementById("userDetails").innerHTML = "<p>No user logged in</p>";
+            }
+        });
+
+        // Toggle Password Visibility
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            let passwordField = document.getElementById("passwordField");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.textContent = "🙈"; // Hide icon
+            } else {
+                passwordField.type = "password";
+                this.textContent = "👁️"; // Show icon
+            }
+        });
+
+        // Logout Functionality
+        document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("loggedIn"); // Only remove login status
+    window.location.href = "login.html";
+});
+
+    </script>
+</body>
+</html>
+
+
+
